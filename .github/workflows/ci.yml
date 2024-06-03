@@ -21,14 +21,12 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4
       - name: Sync catalogs
-        id: autosync
         uses: RedHatProductSecurity/trestle-bot/actions/autosync@v0.10.0
         with:
           markdown_path: "md_catalogs"
           oscal_model: "catalog"
           dry_run: true
       - name: Sync profiles
-        id: autosync
         uses: RedHatProductSecurity/trestle-bot/actions/autosync@v0.10.0
         with:
           markdown_path: "md_profiles"
