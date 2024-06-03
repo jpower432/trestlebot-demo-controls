@@ -1,0 +1,36 @@
+name: Validate PR with CI
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'profiles/**'
+      - 'catalogs/**'
+      - 'md_profiles/**'
+      - 'md_catalogs/**'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  sync-and-verify:
+    name: Content Syncing Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+      - name: Sync catalogs
+        id: autosync
+        uses: RedHatProductSecurity/trestle-bot/actions/autosync@v0.10.0
+        with:
+          markdown_path: "md_catalogs"
+          oscal_model: "catalog"
+          dry_run: true
+      - name: Sync profiles
+        id: autosync
+        uses: RedHatProductSecurity/trestle-bot/actions/autosync@v0.10.0
+        with:
+          markdown_path: "md_profiles"
+          oscal_model: "profile"
+          dry_run: true
